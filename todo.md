@@ -1,0 +1,2 @@
+- [x] This is the config file for the todo for this repository
+- [ ] It is self contained which is kinda cool

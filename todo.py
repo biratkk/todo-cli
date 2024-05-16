@@ -6,10 +6,12 @@ todo_fp = "todo.md"
 
 cli_tool_instructions = [
         ("ls", "Lists all of the todos left to do"),
-        ("comp", "Marks the todo with id provided as complete"),
-        ("undo", "Marks the todo with id provided as undone"),
-        ("add", "Adds the arguments as a todo to the list"),
-        ("rm", "Removes the todo with the id provided"),
+        ("create", "Create a new todo file in the current directory"),
+        ("reset", "Reset the todo file in current directory"),
+        ("comp <id>", "Marks the todo with id provided as complete"),
+        ("undo <id>", "Marks the todo with id provided as undone"),
+        ("add <description>", "Adds the arguments as a todo to the list"),
+        ("rm <id>", "Removes the todo with the id provided"),
         ("gui", "Run the gui for the todo program"),
         ("help", "Help text provided"),
         ("exit", "Exits the program"),
@@ -116,28 +118,56 @@ def undo(id: int):
 
 
 def prompt() -> list[str]:
-    return input(">>>").split(" ")
+    return input(">>> ").split(" ")
+
+
+def create_initial_file():
+    with open(todo_fp, "w") as file:
+        file.write("- [ ] Delete this todo using todo rm 1")
+
+def reset():
+    create_initial_file()
+    print("Reset complete!")
+
+def create():
+    if os.path.isfile(todo_fp):
+        print("File already exists. To reset it use the command todo reset")
+        return
+
+    create_initial_file()  
+    print("Todo file created!")
+    return
 
 def gui():
     help()
     while True:
         action(prompt(), True)
         
-    return
+def print_divider():
+    print("---------------------------------------------------------")
 
 def help():
+    print_divider()
     print("The following are the instructions in case you forget em")
-    print("---")
+    print_divider()
     for tool, instruction in cli_tool_instructions:
-        print(f"{tool}\t\t{instruction}")
-    print("---")
+        print(f"{tool}\n\t{instruction}")
+    print_divider()
 
 def action(args:list[str], in_gui: bool=False):
+
+    if args[0] == 'create':
+        create()
+        return
+    elif args[0] == 'help':
+        help() 
+        return
+
     import_todos(todo_fp)
     if args[0] == 'ls':
-       list_todos() 
-    elif args[0] == 'help':
-       help() 
+        list_todos() 
+    elif args[0] == 'reset':
+        reset() 
     elif args[0] == 'add':
         add(args[1:])
     elif args[0] == 'rm':
