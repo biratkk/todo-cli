@@ -177,6 +177,7 @@ def action(args:list[str], in_gui: bool=False):
     elif args[0] == 'undo':
         undo(int(args[1]) - 1)
     elif not in_gui and args[0] == 'gui':
+        clear_screen()
         gui()
     elif args[0] == 'clear':
         clear_screen() 
