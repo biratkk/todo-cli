@@ -182,6 +182,7 @@ def action(args:list[str], in_gui: bool=False):
     elif args[0] == 'clear':
         clear_screen() 
     elif args[0] == 'exit':
+        clear_screen()
         exit()
     else:
         print("Invalid command.")
